@@ -1,0 +1,33 @@
+---
+title: Vega Example
+---
+
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/javascripts/vega-prime.bundle.js"></script>
+  </head>
+  
+  <body>
+    <div id="peers"></div>
+    <video id="local-stream" autoplay muted></video>
+
+    <script>
+      new VegaPrime({
+        url: 'ws://localhost:3000', 
+        badge: { name: 'Dave' },
+        roomId: 'a',
+      }).onLocalStreamReceived(function(wrappedStream){
+        $('video#local-stream').attr('src', wrappedStream.url);
+      }).onStreamAdded(function(peer){
+        $video = $('<video autoplay muted>');
+        $video.attr('src', peer.streamUrl);
+        $video.attr('data-peer-id', peer.peerId);
+
+        $('#peers').append($video)
+      }).onPeerRemoved(function(peer){
+        $('video[data-peer-id="' + peer.peerId + '"]').remove()
+      })
+    </script>
+  </body>
+</html>
