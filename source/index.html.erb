@@ -14,7 +14,7 @@ title: Vega Example
 
     <script>
       new VegaPrime({
-        url: 'ws://localhost:3000', 
+        url: 'ws://localhost:4500', 
         badge: { name: 'Dave' },
         roomId: 'a',
       }).onLocalStreamReceived(function(wrappedStream){
@@ -27,6 +27,8 @@ title: Vega Example
         $('#peers').append($video)
       }).onPeerRemoved(function(peer){
         $('video[data-peer-id="' + peer.peerId + '"]').remove()
+      }).onClientWebsocketError(function(error){
+        $('body').append(error);
       })
     </script>
   </body>
